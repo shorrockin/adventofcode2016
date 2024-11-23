@@ -12,8 +12,8 @@ func logAssert(msg string, data ...any) {
 	fmt.Fprintf(os.Stderr, "ASSERT:")
 	fmt.Fprintf(os.Stderr, "\tmsg=%s\n", msg)
 
-	for v := range data {
-		fmt.Fprintf(os.Stderr, "\t%v\n", v)
+	for i := 0; i < len(data); i += 2 {
+		fmt.Fprintf(os.Stderr, "\t%v=%+v\n", data[i], data[i+1])
 	}
 	fmt.Fprintf(os.Stderr, string(debug.Stack()))
 	os.Exit(1)
