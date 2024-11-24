@@ -1,0 +1,5 @@
+package {{DAY}}
+
+func Solve(path string) int {
+    return 0
+}
