@@ -70,3 +70,19 @@ func True(value bool, msg string, data ...any) {
 	}
 	logAssert(msg, data...)
 }
+
+func Equal(expected, actual any, msg string, data ...any) {
+	if expected == actual {
+		return
+	}
+	data = append(data, "expected", expected, "actual", actual)
+	logAssert(msg, data...)
+}
+
+func NotEqual(expected, actual any, msg string, data ...any) {
+	if expected != actual {
+		return
+	}
+	data = append(data, "expected", expected, "actual", actual)
+	logAssert(msg, data...)
+}
