@@ -1,7 +1,6 @@
 package day08
 
 import (
-	"log"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
