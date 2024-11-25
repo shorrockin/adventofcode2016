@@ -7,8 +7,6 @@ import (
 )
 
 func logAssert(msg string, data ...any) {
-	// TODO: clean this up perhaps?
-	// adventofcode2015.shorrockin.github/pkg/utils perhaps
 	fmt.Fprintf(os.Stderr, "ASSERT:")
 	fmt.Fprintf(os.Stderr, "\tmsg=%s\n", msg)
 
