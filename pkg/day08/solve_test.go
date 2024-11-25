@@ -18,5 +18,5 @@ func TestPartOneActual(t *testing.T) {
 func TestPartTwoActual(t *testing.T) {
 	// ZJHRKCPLYJ
 	DisplayLights(50, 6, "input.txt")
-	log.Fatalf("intentional failure to log output")
+	// log.Fatalf("intentional failure to log output")
 }
