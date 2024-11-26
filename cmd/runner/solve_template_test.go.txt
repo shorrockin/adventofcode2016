@@ -13,7 +13,7 @@ func TestPartOneExample(t *testing.T) {
 // func TestPartOneActual(t *testing.T) {
 // 	assert.Equal(t, -1, Solve("input.txt"))
 // }
-//
+
 // func TestPartTwoActual(t *testing.T) {
 // 	assert.Equal(t, -1, Solve("input.txt"))
 // }
