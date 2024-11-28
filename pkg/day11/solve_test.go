@@ -9,10 +9,6 @@ import (
 func TestFloorDefinitionParser(t *testing.T) {
 	items := parseFloor(1, "The first floor contains a polonium-compatible microchip, a thulium-compatible microchip, a thulium generator, a promethium generator")
 	assert.Equal(t, 4, len(items))
-	// assert.Equal(t, chips[0], "polonium")
-	// assert.Equal(t, chips[1], "thulium")
-	// assert.Equal(t, generators[0], "thulium")
-	// assert.Equal(t, generators[1], "promethium")
 }
 
 func TestPartOneExample(t *testing.T) {

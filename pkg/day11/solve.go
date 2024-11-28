@@ -107,29 +107,28 @@ func (f Facility) neighbors() []Facility {
 	out := []Facility{}
 	for _, movement := range movements {
 		items := utils.Filter(f.items, func(item Item) bool { return item.floor == f.elevator })
-		combinations := utils.Combinations(items, 2)
 
-		// all the double item movements
-		for _, combination := range combinations {
-			next := f.move(movement, combination...)
-			if next.valid() {
-				out = append(out, next)
+		// NOTE: prune: don't ever take two items down, never makes sense to do so
+		if movement == 1 {
+			combinations := utils.Combinations(items, 2)
+			for _, combination := range combinations {
+
+				next := f.move(movement, combination...)
+				if next.valid() {
+					out = append(out, next)
+				}
 			}
 		}
 
-		// NOTE: prune strategy: if there are no items above, we can't take a single item up
+		// NOTE: prune: if there are no items above, don't take
+		// a single item up, you'll be stuck
 		if !itemsAbove && movement == 1 {
 			continue
 		}
 
-		// NOTE: prune strategy: if there are no items below, we can't take a single item down
+		// NOTE: prune: if there are no items below, don't take
+		// a single item down, you'll never be able to get back up
 		if !itemsBelow && movement == -1 {
-			continue
-		}
-
-		// NOTE: prune strategy: don't take the only thing on the line lower, this doesn't change
-		// anything
-		if !itemsBelow && movement == -1 && len(items) == 1 {
 			continue
 		}
 
