@@ -62,6 +62,14 @@ func CopyMap[K comparable, V any](original map[K]V) map[K]V {
 	return copy
 }
 
+func Keys[K comparable, V any](m map[K]V) []K {
+	keys := make([]K, 0, len(m))
+	for key := range m {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
 func Indexes(value string, target string) []int {
 	indexes := []int{}
 	offset := 0

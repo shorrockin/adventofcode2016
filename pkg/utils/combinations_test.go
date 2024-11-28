@@ -16,3 +16,8 @@ func TestCombinations(t *testing.T) {
 	assert.Equal(t, []string{"B", "D"}, combos[4])
 	assert.Equal(t, []string{"C", "D"}, combos[5])
 }
+
+func TestCombinationsSingleElementArray(t *testing.T) {
+	combos := Combinations([]string{"A"}, 2)
+	assert.Equal(t, 0, len(combos))
+}

@@ -6,6 +6,14 @@ func NewSet[T comparable]() Set[T] {
 	return make(Set[T])
 }
 
+func NewSetFrom[T comparable](values ...T) Set[T] {
+	s := make(Set[T])
+	for _, value := range values {
+		s[value] = true
+	}
+	return s
+}
+
 func (s Set[T]) Copy() Set[T] {
 	return CopyMap(s)
 }

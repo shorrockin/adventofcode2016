@@ -91,6 +91,15 @@ func Find[T any](input []T, selector func(T) bool) T {
 	return zero
 }
 
+func Any[T any](input []T, selector func(T) bool) bool {
+	for _, value := range input {
+		if selector(value) {
+			return true
+		}
+	}
+	return false
+}
+
 func Filter[T any](input []T, selector func(T) bool) []T {
 	out := make([]T, 0)
 	for _, value := range input {
