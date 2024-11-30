@@ -5,6 +5,10 @@ type Coordinate struct {
 	Y int
 }
 
+func At(x, y int) Coordinate {
+	return Coordinate{x, y}
+}
+
 func (g Coordinate) North() Coordinate     { return Coordinate{g.X, g.Y - 1} }
 func (g Coordinate) East() Coordinate      { return Coordinate{g.X + 1, g.Y} }
 func (g Coordinate) NorthEast() Coordinate { return Coordinate{g.X + 1, g.Y - 1} }
