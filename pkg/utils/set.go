@@ -22,6 +22,12 @@ func (s Set[T]) Add(value T) {
 	s[value] = true
 }
 
+func (s Set[T]) AddAll(values ...T) {
+	for _, value := range values {
+		s[value] = true
+	}
+}
+
 func (s Set[T]) Remove(value T) {
 	delete(s, value)
 }
@@ -32,4 +38,8 @@ func (s Set[T]) Contains(value T) bool {
 
 func (s Set[T]) Size() int {
 	return len(s)
+}
+
+func (s Set[T]) Values() []T {
+	return Keys(s)
 }

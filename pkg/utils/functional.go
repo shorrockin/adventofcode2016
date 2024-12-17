@@ -1,6 +1,10 @@
 package utils
 
-import "golang.org/x/exp/constraints"
+import (
+	"adventofcode2024/pkg/assert"
+
+	"golang.org/x/exp/constraints"
+)
 
 func Map[T any, K any](data []T, mapper func(T) K) []K {
 	result := make([]K, len(data))
@@ -91,6 +95,16 @@ func Find[T any](input []T, selector func(T) bool) T {
 	return zero
 }
 
+func Count[T any](input []T, selector func(T) bool) int {
+	count := 0
+	for _, value := range input {
+		if selector(value) {
+			count++
+		}
+	}
+	return count
+}
+
 func Any[T any](input []T, selector func(T) bool) bool {
 	for _, value := range input {
 		if selector(value) {
@@ -126,4 +140,23 @@ func Reduce[T any, K any](input []T, initial K, reducer func(current K, next T) 
 		initial = reducer(initial, value)
 	}
 	return initial
+}
+
+func Chunk[T any](input []T, size int) [][]T {
+	assert.Assert(size > 0, "chunk size must be greater than 0")
+	chunks := len(input) / size
+	if len(input)%chunks != 0 {
+		chunks++
+	}
+
+	out := make([][]T, 0, chunks)
+	for i := 0; i < chunks; i++ {
+		last := (i + 1) * size
+		if last > len(input) {
+			last = len(input)
+
+		}
+		out = append(out, input[i*size:last:last])
+	}
+	return out
 }

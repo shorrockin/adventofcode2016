@@ -1,6 +1,6 @@
 package utils
 
-import "adventofcode2016/pkg/assert"
+import "adventofcode2024/pkg/assert"
 
 // implementation of chineese remainder theorem which given a remainder
 // and modulus will return the first common occurance of the two numbers

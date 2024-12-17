@@ -24,6 +24,14 @@ func (q *Queue[T]) Dequeue() (T, bool) {
 	return element.Value.(T), true
 }
 
+func (q *Queue[T]) MustDequeue() T {
+	value, ok := q.Dequeue()
+	if !ok {
+		panic("failed to dequeue, expected value to be on queue")
+	}
+	return value
+}
+
 func (q *Queue[T]) IsEmpty() bool {
 	return q.list.Len() == 0
 }

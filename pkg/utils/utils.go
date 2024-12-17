@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"adventofcode2016/pkg/assert"
+	"adventofcode2024/pkg/assert"
 	"bufio"
 	"log"
 	"os"
@@ -39,7 +39,7 @@ func ReadInput(path string) ([]string, error) {
 
 func MustAtoi(raw string) int {
 	value, err := strconv.Atoi(raw)
-	assert.NoError(err, "could not convert value to number", raw)
+	assert.NoError(err, "could not convert value to number", "value", raw)
 	return value
 }
 
@@ -52,6 +52,20 @@ func CopySlice[T any](original []T) []T {
 	copied := make([]T, len(original))
 	copy(copied, original)
 	return copied
+}
+
+func EqualSlices[T comparable](a, b []T) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+
+	return true
 }
 
 func CopyMap[K comparable, V any](original map[K]V) map[K]V {
