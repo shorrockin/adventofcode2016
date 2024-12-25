@@ -1,18 +1,19 @@
 package day03
 
 import (
-	"adventofcode2016/pkg/assert"
 	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
+	"adventofcode2016/pkg/utils/slices"
 	"strings"
 )
 
 func PartOne(path string) int {
 	lines := utils.MustReadInput(path)
-	values := utils.Map(lines, func(line string) []int {
+	values := slices.Map(lines, func(line string) []int {
 		fields := strings.Fields(line)
-		return utils.Map(fields, utils.MustAtoi)
+		return slices.Map(fields, utils.MustAtoi)
 	})
-	return len(utils.Filter(values, IsValidTriangle))
+	return len(slices.Filter(values, IsValidTriangle))
 }
 
 func PartTwo(path string) int {
@@ -28,7 +29,7 @@ func PartTwo(path string) int {
 		values = append(values, []int{utils.MustAtoi(first[1]), utils.MustAtoi(second[1]), utils.MustAtoi(third[1])})
 		values = append(values, []int{utils.MustAtoi(first[2]), utils.MustAtoi(second[2]), utils.MustAtoi(third[2])})
 	}
-	return len(utils.Filter(values, IsValidTriangle))
+	return len(slices.Filter(values, IsValidTriangle))
 }
 
 func IsValidTriangle(values []int) bool {

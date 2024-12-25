@@ -1,8 +1,9 @@
 package day04
 
 import (
-	"adventofcode2016/pkg/assert"
 	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
+	slice "adventofcode2016/pkg/utils/slices"
 	"regexp"
 	"slices"
 	"sort"
@@ -69,17 +70,17 @@ func (r Room) GenerateChecksum() string {
 }
 
 func SumSectors(path string) int {
-	rooms := utils.Map(utils.MustReadInput(path), NewRoom)
-	rooms = utils.Filter(rooms, func(room Room) bool {
+	rooms := slice.Map(utils.MustReadInput(path), NewRoom)
+	rooms = slice.Filter(rooms, func(room Room) bool {
 		return room.checksum == room.GenerateChecksum()
 	})
-	return utils.Reduce(rooms, 0, func(accum int, room Room) int {
+	return slice.Reduce(rooms, 0, func(accum int, room Room) int {
 		return accum + room.sector
 	})
 }
 
 func FindNorthPoleSector(path string) int {
-	rooms := utils.Map(utils.MustReadInput(path), NewRoom)
+	rooms := slice.Map(utils.MustReadInput(path), NewRoom)
 	for _, room := range rooms {
 		if room.Decrypt() == "northpole object storage" {
 			return room.sector

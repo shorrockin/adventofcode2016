@@ -1,7 +1,7 @@
 package day13
 
 import (
-	"adventofcode2016/pkg/grid"
+	"adventofcode2016/pkg/utils/grid"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

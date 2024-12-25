@@ -1,6 +1,6 @@
 package day12
 
-import "adventofcode2016/pkg/assert"
+import "adventofcode2016/pkg/utils/assert"
 
 type State struct {
 	registers  []int

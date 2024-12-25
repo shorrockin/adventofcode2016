@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -19,18 +18,4 @@ func TestReadInputError(t *testing.T) {
 	lines, err := ReadInput("invalid.path.txt")
 	assert.Nil(t, lines)
 	assert.NotNil(t, err)
-}
-
-func TestKeys(t *testing.T) {
-	data := map[string]int{
-		"chris": 1,
-		"john":  2,
-		"jimbo": 3,
-	}
-	keys := Keys(data)
-	assert.True(t, slices.Contains(keys, "chris"))
-	assert.True(t, slices.Contains(keys, "john"))
-	assert.True(t, slices.Contains(keys, "jimbo"))
-	assert.Equal(t, 3, len(data))
-
 }

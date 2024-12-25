@@ -1,8 +1,9 @@
 package day15
 
 import (
-	"adventofcode2016/pkg/assert"
 	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
+	"adventofcode2016/pkg/utils/crt"
 	"regexp"
 )
 
@@ -15,7 +16,7 @@ func Solve(path string) int {
 		remainders[idx] = disc.positions - ((disc.start + disc.id) % disc.positions)
 		moduli[idx] = disc.positions
 	}
-	return utils.CRT(remainders, moduli)
+	return crt.CRT(remainders, moduli)
 }
 
 type Disc struct {

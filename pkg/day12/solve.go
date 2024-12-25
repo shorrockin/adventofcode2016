@@ -1,8 +1,8 @@
 package day12
 
 import (
-	"adventofcode2016/pkg/assert"
 	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
 	"strconv"
 	"strings"
 )

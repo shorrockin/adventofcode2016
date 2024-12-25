@@ -1,14 +1,16 @@
 package day08
 
 import (
-	"adventofcode2016/pkg/assert"
-	"adventofcode2016/pkg/grid"
 	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
+	"adventofcode2016/pkg/utils/collections"
+	"adventofcode2016/pkg/utils/grid"
+	"adventofcode2016/pkg/utils/slices"
 	"fmt"
 	"strings"
 )
 
-type Screen []grid.Coordinate
+type Screen []grid.Coord
 type Command func(Screen) Screen
 
 func CountLights(width, height int, path string) int {
@@ -17,14 +19,14 @@ func CountLights(width, height int, path string) int {
 
 func DisplayLights(width, height int, path string) {
 	screen := process(path, width, height)
-	index := utils.NewSet[grid.Coordinate]()
+	index := collections.NewSet[grid.Coord]()
 	for _, coordinate := range screen {
 		index.Add(coordinate)
 	}
 
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
-			if index.Contains(grid.Coordinate{X: x, Y: y}) {
+			if index.Contains(grid.Coord{X: x, Y: y}) {
 				fmt.Print("█")
 			} else {
 				fmt.Print(" ")
@@ -39,11 +41,11 @@ func rect(width, height int) Command {
 		var new Screen
 		for y := 0; y < height; y++ {
 			for x := 0; x < width; x++ {
-				new = append(new, grid.Coordinate{X: x, Y: y})
+				new = append(new, grid.Coord{X: x, Y: y})
 			}
 		}
 		screen = append(screen, new...)
-		return utils.Uniq(screen)
+		return slices.Uniq(screen)
 	}
 }
 
@@ -53,7 +55,7 @@ func row(row, width, amount int) Command {
 		for _, coordinate := range screen {
 			if coordinate.Y == row {
 				x := (coordinate.X + amount) % width
-				out = append(out, grid.Coordinate{X: x, Y: coordinate.Y})
+				out = append(out, grid.Coord{X: x, Y: coordinate.Y})
 			} else {
 				out = append(out, coordinate)
 			}
@@ -69,7 +71,7 @@ func column(column, height, amount int) Command {
 		for _, coordinate := range screen {
 			if coordinate.X == column {
 				y := (coordinate.Y + amount) % height
-				out = append(out, grid.Coordinate{X: coordinate.X, Y: y})
+				out = append(out, grid.Coord{X: coordinate.X, Y: y})
 			} else {
 				out = append(out, coordinate)
 			}
@@ -80,7 +82,7 @@ func column(column, height, amount int) Command {
 }
 
 func process(path string, width, height int) Screen {
-	return utils.Reduce(
+	return slices.Reduce(
 		parse(path, width, height),
 		make(Screen, 0),
 		func(screen Screen, next Command) Screen {
@@ -107,5 +109,5 @@ func parse(path string, width, height int) []Command {
 			return rect(1, 1)
 		}
 	}
-	return utils.Map(utils.MustReadInput(path), extract)
+	return slices.Map(utils.MustReadInput(path), extract)
 }

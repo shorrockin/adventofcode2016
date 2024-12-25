@@ -2,15 +2,20 @@ package {{DAY}}
 
 import (
 	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/logger"
 	"fmt"
 )
 
+var log = logger.New("{{DAY}}")
+
 func Solve(path string, partOne bool) int {
+	log.Reset("starting")
 	for _, line := range utils.MustReadInput(path) {
 		fmt.Printf("parsing line: %v\n", line)
 		// parts := strings.Fields(line)
 		// ints := utils.Map(parts, utils.MustAtoi)
 		// TODO
 	}
+	log.Log("done", logger.With("result", 1), logger.IncludeTotal)
 	return 0
 }

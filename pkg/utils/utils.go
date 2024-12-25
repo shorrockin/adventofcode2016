@@ -1,8 +1,9 @@
 package utils
 
 import (
-	"adventofcode2016/pkg/assert"
+	"adventofcode2016/pkg/utils/assert"
 	"bufio"
+	"golang.org/x/exp/constraints"
 	"log"
 	"os"
 	"strconv"
@@ -48,42 +49,6 @@ func Must[T any](value T, err error) T {
 	return value
 }
 
-func CopySlice[T any](original []T) []T {
-	copied := make([]T, len(original))
-	copy(copied, original)
-	return copied
-}
-
-func EqualSlices[T comparable](a, b []T) bool {
-	if len(a) != len(b) {
-		return false
-	}
-
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-
-	return true
-}
-
-func CopyMap[K comparable, V any](original map[K]V) map[K]V {
-	copy := make(map[K]V, len(original))
-	for key, value := range original {
-		copy[key] = value
-	}
-	return copy
-}
-
-func Keys[K comparable, V any](m map[K]V) []K {
-	keys := make([]K, 0, len(m))
-	for key := range m {
-		keys = append(keys, key)
-	}
-	return keys
-}
-
 func Indexes(value string, target string) []int {
 	indexes := []int{}
 	offset := 0
@@ -99,4 +64,25 @@ func Indexes(value string, target string) []int {
 	}
 
 	return indexes
+}
+
+func Abs[T int | int64](value T) T {
+	if value < 0 {
+		return -value
+	}
+	return value
+}
+
+func Min[T constraints.Ordered](left, right T) T {
+	if left < right {
+		return left
+	}
+	return right
+}
+
+func Max[T constraints.Ordered](left, right T) T {
+	if left > right {
+		return left
+	}
+	return right
 }

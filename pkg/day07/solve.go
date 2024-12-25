@@ -1,8 +1,9 @@
 package day07
 
 import (
-	"adventofcode2016/pkg/assert"
 	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
+	slice "adventofcode2016/pkg/utils/slices"
 	"slices"
 )
 
@@ -11,12 +12,12 @@ const CLOSING = ']'
 
 func PartOne(path string) int {
 	lines := utils.MustReadInput(path)
-	return len(utils.Filter(lines, SupportsTLS))
+	return len(slice.Filter(lines, SupportsTLS))
 }
 
 func PartTwo(path string) int {
 	lines := utils.MustReadInput(path)
-	return len(utils.Filter(lines, SupportsSSL))
+	return len(slice.Filter(lines, SupportsSSL))
 }
 
 func SupportsTLS(ip string) bool {

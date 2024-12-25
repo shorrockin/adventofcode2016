@@ -1,8 +1,9 @@
 package day11
 
 import (
-	"adventofcode2016/pkg/assert"
 	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
+	"adventofcode2016/pkg/utils/slices"
 	"regexp"
 )
 
@@ -11,18 +12,18 @@ var GENERATOR_REGEXP = regexp.MustCompile(`a ([a-z]+) generator`)
 
 func parseFloor(floor int, definition string) []Item {
 	mapper := func(match []string) string { return match[1] }
-	chips := utils.Map(
+	chips := slices.Map(
 		CHIP_REGEXP.FindAllStringSubmatch(definition, -1),
 		mapper,
 	)
-	generators := utils.Map(
+	generators := slices.Map(
 		GENERATOR_REGEXP.FindAllStringSubmatch(definition, -1),
 		mapper,
 	)
 
 	return append(
-		utils.Map(chips, func(name string) Item { return NewChip(name, floor) }),
-		utils.Map(generators, func(name string) Item { return NewGenerator(name, floor) })...,
+		slices.Map(chips, func(name string) Item { return NewChip(name, floor) }),
+		slices.Map(generators, func(name string) Item { return NewGenerator(name, floor) })...,
 	)
 }
 

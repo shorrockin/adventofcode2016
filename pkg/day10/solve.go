@@ -1,8 +1,8 @@
 package day10
 
 import (
-	"adventofcode2016/pkg/assert"
 	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
 	"fmt"
 	"strings"
 )
@@ -44,8 +44,8 @@ func (b *Bot) Add(factory *Factory, chip int) {
 	}
 
 	if b.one != 0 && b.two != 0 {
-		high := utils.MaxValue(b.one, b.two)
-		low := utils.MinValue(b.one, b.two)
+		high := utils.Max(b.one, b.two)
+		low := utils.Min(b.one, b.two)
 		b.one = 0
 		b.two = 0
 		fmt.Printf("%v - sending %v (low) to %v and %v (high) to %v\n", b.id, low, b.low, high, b.high)

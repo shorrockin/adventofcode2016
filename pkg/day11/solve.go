@@ -1,9 +1,9 @@
 package day11
 
 import (
-	"adventofcode2016/pkg/assert"
-	"adventofcode2016/pkg/graph"
-	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
+	"adventofcode2016/pkg/utils/bfs"
+	"adventofcode2016/pkg/utils/slices"
 	"fmt"
 )
 
@@ -42,7 +42,7 @@ func (i Item) String() string {
 }
 
 func (f Facility) valid() bool {
-	return !utils.Any(f.items, f.fried)
+	return !slices.Any(f.items, f.fried)
 }
 
 func (f Facility) fried(item Item) bool {
@@ -106,11 +106,11 @@ func (f Facility) neighbors() []Facility {
 
 	out := []Facility{}
 	for _, movement := range movements {
-		items := utils.Filter(f.items, func(item Item) bool { return item.floor == f.elevator })
+		items := slices.Filter(f.items, func(item Item) bool { return item.floor == f.elevator })
 
 		// NOTE: prune: don't ever take two items down, never makes sense to do so
 		if movement == 1 {
-			combinations := utils.Combinations(items, 2)
+			combinations := slices.Combinations(items, 2)
 			for _, combination := range combinations {
 
 				next := f.move(movement, combination...)
@@ -174,14 +174,14 @@ func (f Facility) hash() string {
 	// F2 E  LG LM .  .
 	// F1 .  .  .  .  HM
 	// TODO: change the hash function below to relfect ^
-	return fmt.Sprintf("elevator@%d:%+v", f.elevator, utils.Map(f.items, func(i Item) string { return i.String() }))
+	return fmt.Sprintf("elevator@%d:%+v", f.elevator, slices.Map(f.items, func(i Item) string { return i.String() }))
 }
 
 func Solve(path string) int {
 	facility := parse(path)
 	lookup := map[string]Facility{facility.hash(): facility}
 
-	best, ok := graph.BFS(
+	best, ok := bfs.BFS(
 		facility.hash(),
 		func(hash string) []string {
 			facility, ok := lookup[hash]
@@ -196,7 +196,7 @@ func Solve(path string) int {
 				lookup[neighbor.hash()] = neighbor
 			}
 
-			return utils.Map(neighbors, func(f Facility) string { return f.hash() })
+			return slices.Map(neighbors, func(f Facility) string { return f.hash() })
 		},
 		func(hash string) bool {
 			return lookup[hash].done()

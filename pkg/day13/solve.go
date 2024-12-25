@@ -1,19 +1,19 @@
 package day13
 
 import (
-	"adventofcode2016/pkg/assert"
-	"adventofcode2016/pkg/graph"
-	"adventofcode2016/pkg/grid"
-	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
+	"adventofcode2016/pkg/utils/bfs"
+	"adventofcode2016/pkg/utils/collections"
+	"adventofcode2016/pkg/utils/grid"
 	"math/bits"
 )
 
-func StepsToPosition(seed int, starting grid.Coordinate, target grid.Coordinate) int {
+func StepsToPosition(seed int, starting grid.Coord, target grid.Coord) int {
 	maze := NewMaze(seed)
-	path, ok := graph.BFS(
+	path, ok := bfs.BFS(
 		starting,
-		func(at grid.Coordinate) []grid.Coordinate { return maze.Neighbors(at) },
-		func(at grid.Coordinate) bool { return at == target },
+		func(at grid.Coord) []grid.Coord { return maze.Neighbors(at) },
+		func(at grid.Coord) bool { return at == target },
 	)
 
 	if !ok {
@@ -25,17 +25,17 @@ func StepsToPosition(seed int, starting grid.Coordinate, target grid.Coordinate)
 
 // effectively a copy of our BFS algorithm which limits itself to a path
 // size of 50, returning the number of unique positions visited
-func CountUniquePositions(seed int, starting grid.Coordinate, steps int) int {
+func CountUniquePositions(seed int, starting grid.Coord, steps int) int {
 	maze := NewMaze(seed)
 
-	queue := utils.NewQueue[[]grid.Coordinate]()
-	queue.Enqueue([]grid.Coordinate{starting})
+	queue := collections.NewQueue[[]grid.Coord]()
+	queue.Push([]grid.Coord{starting})
 
-	visited := utils.NewSet[grid.Coordinate]()
+	visited := collections.NewSet[grid.Coord]()
 	visited.Add(starting)
 
 	for !queue.IsEmpty() {
-		currentPath, ok := queue.Dequeue()
+		currentPath, ok := queue.Pop()
 		if !ok {
 			assert.Fail("failed to dequeue, expected value to be on queue")
 		}
@@ -48,11 +48,11 @@ func CountUniquePositions(seed int, starting grid.Coordinate, steps int) int {
 
 		for _, neighbor := range maze.Neighbors(tail) {
 			if !visited.Contains(neighbor) {
-				var newPath []grid.Coordinate = make([]grid.Coordinate, len(currentPath)+1)
+				var newPath []grid.Coord = make([]grid.Coord, len(currentPath)+1)
 				copy(newPath, currentPath)
 				newPath[len(currentPath)] = neighbor
 
-				queue.Enqueue(newPath)
+				queue.Push(newPath)
 				visited.Add(neighbor)
 			}
 		}
@@ -63,15 +63,15 @@ func CountUniquePositions(seed int, starting grid.Coordinate, steps int) int {
 
 type Maze struct {
 	seed  int
-	cache map[grid.Coordinate]bool
+	cache map[grid.Coord]bool
 }
 
 func NewMaze(seed int) Maze {
-	return Maze{seed, make(map[grid.Coordinate]bool)}
+	return Maze{seed, make(map[grid.Coord]bool)}
 }
 
-func (maze *Maze) Neighbors(at grid.Coordinate) []grid.Coordinate {
-	var neighbors []grid.Coordinate
+func (maze *Maze) Neighbors(at grid.Coord) []grid.Coord {
+	var neighbors []grid.Coord
 	for _, cardinal := range at.Cardinals() {
 		if maze.IsOpen(cardinal) {
 			neighbors = append(neighbors, cardinal)
@@ -80,7 +80,7 @@ func (maze *Maze) Neighbors(at grid.Coordinate) []grid.Coordinate {
 	return neighbors
 }
 
-func (maze *Maze) IsOpen(pos grid.Coordinate) bool {
+func (maze *Maze) IsOpen(pos grid.Coord) bool {
 	if open, ok := maze.cache[pos]; ok {
 		return open
 	}

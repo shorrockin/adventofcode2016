@@ -1,9 +1,9 @@
 package day02
 
 import (
-	"adventofcode2016/pkg/assert"
-	"adventofcode2016/pkg/grid"
 	"adventofcode2016/pkg/utils"
+	"adventofcode2016/pkg/utils/assert"
+	"adventofcode2016/pkg/utils/grid"
 	"strings"
 )
 
@@ -22,14 +22,14 @@ var PART_TWO_GRID = [][]string{
 }
 
 func PartOne(path string) int {
-	return utils.MustAtoi(processGrid(path, PART_ONE_GRID, grid.Coordinate{X: 1, Y: 1}))
+	return utils.MustAtoi(processGrid(path, PART_ONE_GRID, grid.Coord{X: 1, Y: 1}))
 }
 
 func PartTwo(path string) string {
-	return processGrid(path, PART_TWO_GRID, grid.Coordinate{X: 0, Y: 2})
+	return processGrid(path, PART_TWO_GRID, grid.Coord{X: 0, Y: 2})
 }
 
-func processGrid(path string, grid [][]string, position grid.Coordinate) string {
+func processGrid(path string, grid [][]string, position grid.Coord) string {
 	lines := utils.MustReadInput(path)
 	var code strings.Builder
 
