@@ -3,11 +3,14 @@ package utils
 import (
 	"adventofcode2016/pkg/utils/assert"
 	"bufio"
-	"golang.org/x/exp/constraints"
+	"crypto/md5"
+	"encoding/hex"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"golang.org/x/exp/constraints"
 )
 
 func MustReadInput(path string) []string {
@@ -85,4 +88,18 @@ func Max[T constraints.Ordered](left, right T) T {
 		return left
 	}
 	return right
+}
+
+func Md5(data string) string {
+	hash := md5.New()
+	hash.Write([]byte(data))
+	checksum := hash.Sum(nil)
+	return hex.EncodeToString(checksum)
+}
+
+func IfElse[T any](condition bool, a, b T) T {
+	if condition {
+		return a
+	}
+	return b
 }

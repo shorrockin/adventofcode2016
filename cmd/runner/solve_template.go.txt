@@ -16,6 +16,5 @@ func Solve(path string, partOne bool) int {
 		// ints := utils.Map(parts, utils.MustAtoi)
 		// TODO
 	}
-	log.Log("done", logger.With("result", 1), logger.IncludeTotal)
-	return 0
+	return logger.LogReturn(&log, 0)
 }

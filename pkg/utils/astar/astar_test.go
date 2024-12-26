@@ -20,7 +20,7 @@ func TestCanSolvePath(t *testing.T) {
 		return float64(node.Distance(end))
 	}
 
-	path := AStar(start, end, neighbors, heuristic)
+	path := AStar(start, AtEnd(end), neighbors, heuristic)
 	assert.Equal(t, 3, len(path))
 	assert.Equal(t, start, path[0])
 	// assert.Equal(t, grid.At(1, 0), path[1])

@@ -10,6 +10,9 @@ type Preference struct {
 }
 
 type Configurator func(*Preference)
+type EndChecker[T comparable] func(node *collections.PqNode[T]) bool
+type NeighborsRetriever[T comparable] func(node *collections.PqNode[T]) []T
+type Heuristic[T comparable] func(node T, from *collections.PqNode[T]) float64
 
 var ExcludeStart Configurator = func(p *Preference) {
 	p.includeStart = false
@@ -19,7 +22,17 @@ var AllowBacktrack Configurator = func(p *Preference) {
 	p.allowBacktrack = true
 }
 
-func AStar[T comparable](start, end T, neighbors func(node *collections.PqNode[T]) []T, heuristic func(node T, from *collections.PqNode[T]) float64, configs ...Configurator) []T {
+func AtEnd[T comparable](value T) EndChecker[T] {
+	return func(node *collections.PqNode[T]) bool {
+		return node.Contents == value
+	}
+}
+
+func NoHeuristic[T comparable](node T, from *collections.PqNode[T]) float64 {
+	return 0
+}
+
+func AStar[T comparable](start T, complete EndChecker[T], neighbors NeighborsRetriever[T], heuristic Heuristic[T], configs ...Configurator) []T {
 	preferences := &Preference{
 		allowBacktrack: false,
 		includeStart:   true,
@@ -35,7 +48,7 @@ func AStar[T comparable](start, end T, neighbors func(node *collections.PqNode[T
 	for pq.Len() > 0 {
 		current := pq.PopNode()
 
-		if current.Contents == end {
+		if complete(current) {
 			path := make([]T, 0)
 			for current != nil {
 				path = append([]T{current.Contents}, path...)

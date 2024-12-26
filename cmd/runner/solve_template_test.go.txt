@@ -7,18 +7,18 @@ import (
 )
 
 func TestPartOneExample(t *testing.T) {
-	assert.Equal(t, -1, Solve("input.example.txt", true))
+	assert.Equal(t, nil, Solve("input.example.txt", true))
 }
 
 // func TestPartOneActual(t *testing.T) {
-// 	assert.Equal(t, -1, Solve("input.txt", true))
+// 	assert.Equal(t, nil, Solve("input.txt", true))
 // }
 
 
 // func TestPartTwoExample(t *testing.T) {
-// 	assert.Equal(t, -1, Solve("input.example.txt", false))
+// 	assert.Equal(t, nil, Solve("input.example.txt", false))
 // }
 
 // func TestPartTwoActual(t *testing.T) {
-// 	assert.Equal(t, -1, Solve("input.txt", false))
+// 	assert.Equal(t, nil, Solve("input.txt", false))
 // }

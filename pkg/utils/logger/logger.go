@@ -49,6 +49,11 @@ func (logger *Logger) Checkpoint(msg string, options ...Option) {
 	logger.last = time.Now()
 }
 
+func LogReturn[T any](logger *Logger, value T) T {
+	logger.Log("returning", With("value", value), IncludeTotal)
+	return value
+}
+
 func (logger *Logger) Log(msg string, options ...Option) {
 	logOptions := &LogOptions{
 		includeTotal: false,

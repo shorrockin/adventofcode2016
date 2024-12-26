@@ -9,7 +9,7 @@ import (
 type Coord struct {
 	X     int
 	Y     int
-	label string
+	Label string
 }
 
 func At(x, y int) Coord {
@@ -17,7 +17,7 @@ func At(x, y int) Coord {
 }
 
 func (g Coord) WithLabel(label string) Coord {
-	g.label = label
+	g.Label = label
 	return g
 }
 
@@ -111,8 +111,8 @@ func (g Coord) CoordsInRange(maxRange int) []Coord {
 }
 
 func (g Coord) String() string {
-	if g.label != "" {
-		return fmt.Sprintf("%v(x:%d,y:%d)", g.label, g.X, g.Y)
+	if g.Label != "" {
+		return fmt.Sprintf("%v(x:%d,y:%d)", g.Label, g.X, g.Y)
 	}
 	return fmt.Sprintf("(x:%d,y:%d)", g.X, g.Y)
 }

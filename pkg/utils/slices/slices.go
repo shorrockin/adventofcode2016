@@ -7,6 +7,11 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+func Tail[T any](input []T) T {
+	assert.NotEqual(0, len(input), "cannot get tail of empty slice")
+	return input[len(input)-1]
+}
+
 func Copy[T any](original []T) []T {
 	copied := make([]T, len(original))
 	copy(copied, original)
