@@ -37,24 +37,40 @@ func New(name string) Logger {
 	return bm
 }
 
-func (logger *Logger) Reset(msg string) {
+func (logger *Logger) Reset(msg string, options ...interface{}) {
 	logger.start = time.Now()
 	logger.last = logger.start
 	logger.laps = 0
-	logger.Log(msg, ExcludeDelta, WithNewline)
+	logger.Log(msg, append(options, ExcludeDelta)...)
 }
 
-func (logger *Logger) Checkpoint(msg string, options ...Option) {
+func (logger *Logger) Checkpoint(msg string, options ...interface{}) {
 	logger.Log(msg, options...)
 	logger.last = time.Now()
 }
 
-func LogReturn[T any](logger *Logger, value T) T {
-	logger.Log("returning", With("value", value), IncludeTotal)
+func LogReturn[T any](logger *Logger, value T, options ...interface{}) T {
+	logger.Log("returning", append(options, With("value", value), IncludeTotal)...)
 	return value
 }
 
-func (logger *Logger) Log(msg string, options ...Option) {
+func (logger *Logger) Log(msg string, opts ...interface{}) {
+	options := []Option{}
+	for i := 0; i < len(opts); i++ {
+		if i+1 < len(opts) {
+			if name, ok := opts[i].(string); ok {
+				if value, ok := opts[i+1].(interface{}); ok {
+					options = append(options, With(name, value))
+					i++
+					continue
+				}
+			}
+		}
+		if option, ok := opts[i].(Option); ok {
+			options = append(options, option)
+		}
+	}
+
 	logOptions := &LogOptions{
 		includeTotal: false,
 		includeDelta: true,

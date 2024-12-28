@@ -97,9 +97,19 @@ func Md5(data string) string {
 	return hex.EncodeToString(checksum)
 }
 
-func IfElse[T any](condition bool, a, b T) T {
+func Ternary[T any](condition bool, a, b T) T {
 	if condition {
 		return a
 	}
 	return b
+}
+
+func CountCharacters(value string, target rune) int {
+	count := 0
+	for _, char := range value {
+		if char == target {
+			count++
+		}
+	}
+	return count
 }

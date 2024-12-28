@@ -37,7 +37,7 @@ func path(passcode string, shortest bool) []Position {
 		Position{grid.At(0, 0), passcode, utils.Md5(passcode)},
 		isComplete,
 		neighbors,
-		utils.IfElse(shortest, shortestHeuristic, longestHeuristic),
+		utils.Ternary(shortest, shortestHeuristic, longestHeuristic),
 	)
 	assert.NotEqual(0, len(path), "no path found")
 	return path
