@@ -23,13 +23,13 @@ var end = grid.At(3, 3)
 func PartOne(passcode string) string {
 	log.Reset(fmt.Sprintf("part one: %s", passcode))
 	tail := slices.Tail(path(passcode, true))
-	return logger.LogReturn(&log, tail.passcode[len(passcode):])
+	return logger.Return(&log, tail.passcode[len(passcode):])
 }
 
 func PartTwo(passcode string) int {
 	log.Reset(fmt.Sprintf("part two: %s", passcode))
 	solution := path(passcode, false)
-	return logger.LogReturn(&log, len(solution)-1)
+	return logger.Return(&log, len(solution)-1)
 }
 
 func path(passcode string, shortest bool) []Position {

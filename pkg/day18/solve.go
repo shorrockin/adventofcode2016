@@ -16,7 +16,7 @@ func Solve(input string, iterations int) int {
 		input = next(input)
 		safe += utils.CountCharacters(input, '.')
 	}
-	return logger.LogReturn(&log, safe, "cache_hits", len(cache))
+	return logger.Return(&log, safe, "cache_hits", len(cache))
 }
 
 func next(previous string) string {

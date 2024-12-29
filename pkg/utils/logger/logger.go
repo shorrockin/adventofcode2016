@@ -1,7 +1,9 @@
 package logger
 
 import (
+	"adventofcode2016/pkg/utils/maps"
 	"fmt"
+	"slices"
 	"strings"
 	"time"
 )
@@ -49,28 +51,12 @@ func (logger *Logger) Checkpoint(msg string, options ...interface{}) {
 	logger.last = time.Now()
 }
 
-func LogReturn[T any](logger *Logger, value T, options ...interface{}) T {
-	logger.Log("returning", append(options, With("value", value), IncludeTotal)...)
+func Return[T any](logger *Logger, value T, options ...interface{}) T {
+	logger.Log("done", append(options, With("returning", value), WithNewline, IncludeTotal)...)
 	return value
 }
 
 func (logger *Logger) Log(msg string, opts ...interface{}) {
-	options := []Option{}
-	for i := 0; i < len(opts); i++ {
-		if i+1 < len(opts) {
-			if name, ok := opts[i].(string); ok {
-				if value, ok := opts[i+1].(interface{}); ok {
-					options = append(options, With(name, value))
-					i++
-					continue
-				}
-			}
-		}
-		if option, ok := opts[i].(Option); ok {
-			options = append(options, option)
-		}
-	}
-
 	logOptions := &LogOptions{
 		includeTotal: false,
 		includeDelta: true,
@@ -78,9 +64,27 @@ func (logger *Logger) Log(msg string, opts ...interface{}) {
 		newline:      false,
 		variables:    make(map[string]interface{}),
 	}
-	for _, option := range options {
-		option(logger, logOptions)
+
+	for i := 0; i < len(opts); i++ {
+		if i+1 < len(opts) {
+			if name, ok := opts[i].(string); ok {
+				if value, ok := opts[i+1].(interface{}); ok {
+					With(name, value)(logger, logOptions)
+					i++
+					continue
+				}
+			}
+		}
+
+		if option, ok := opts[i].(func(*Logger, *LogOptions)); ok {
+			option(logger, logOptions)
+		} else if option, ok := opts[i].(Option); ok {
+			option(logger, logOptions)
+		} else {
+			panic(fmt.Sprintf("unknown option type: %#v", opts[i]))
+		}
 	}
+
 	elapsed := time.Since(logger.last)
 	total := time.Since(logger.start)
 	logger.laps++
@@ -94,13 +98,17 @@ func (logger *Logger) Log(msg string, opts ...interface{}) {
 	}
 
 	trailing := []string{}
-	for name, value := range logOptions.variables {
-		trailing = append(trailing, fmt.Sprintf("%s=%+v", name, value))
+	keys := maps.Keys(logOptions.variables)
+	slices.Sort(keys)
+
+	for _, key := range keys {
+		trailing = append(trailing, fmt.Sprintf("%s=%+v", key, logOptions.variables[key]))
 	}
 
 	if logOptions.includeDelta {
 		trailing = append(trailing, fmt.Sprintf("Δ=%s", duration(elapsed)))
 	}
+
 	if logOptions.includeTotal {
 		trailing = append(trailing, fmt.Sprintf("∑=%s", duration(total)))
 	}
@@ -110,7 +118,7 @@ func (logger *Logger) Log(msg string, opts ...interface{}) {
 		newline = "\n"
 	}
 
-	fmt.Printf("%v%d. [%s] %s%s %s\n", newline, logger.laps, logger.name, indentation, msg, strings.Join(trailing, ", "))
+	fmt.Printf("%v%4d. [%s] %s%s %s\n", newline, logger.laps, logger.name, indentation, msg, strings.Join(trailing, ", "))
 }
 
 func duration(d time.Duration) string {
