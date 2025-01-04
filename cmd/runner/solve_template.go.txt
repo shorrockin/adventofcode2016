@@ -3,7 +3,6 @@ package {{DAY}}
 import (
 	"adventofcode2016/pkg/utils"
 	"adventofcode2016/pkg/utils/logger"
-	"fmt"
 )
 
 var log = logger.New("{{DAY}}")

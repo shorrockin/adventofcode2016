@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"adventofcode2016/pkg/utils/colors"
 	"adventofcode2016/pkg/utils/maps"
 	"fmt"
 	"slices"
@@ -52,7 +53,7 @@ func (logger *Logger) Checkpoint(msg string, options ...interface{}) {
 }
 
 func Return[T any](logger *Logger, value T, options ...interface{}) T {
-	logger.Log("done", append(options, With("returning", value), WithNewline, IncludeTotal)...)
+	logger.Log("done", append(options, With("returning", value), IncludeTotal)...)
 	return value
 }
 
@@ -102,15 +103,15 @@ func (logger *Logger) Log(msg string, opts ...interface{}) {
 	slices.Sort(keys)
 
 	for _, key := range keys {
-		trailing = append(trailing, fmt.Sprintf("%s=%+v", key, logOptions.variables[key]))
+		trailing = append(trailing, fmt.Sprintf("%s="+colors.Green("%+v"), key, logOptions.variables[key]))
 	}
 
 	if logOptions.includeDelta {
-		trailing = append(trailing, fmt.Sprintf("Δ=%s", duration(elapsed)))
+		trailing = append(trailing, fmt.Sprintf("Δ="+colors.Yellow("%s"), duration(elapsed)))
 	}
 
 	if logOptions.includeTotal {
-		trailing = append(trailing, fmt.Sprintf("∑=%s", duration(total)))
+		trailing = append(trailing, fmt.Sprintf("∑="+colors.Yellow("%s"), duration(total)))
 	}
 
 	newline := ""
