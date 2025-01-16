@@ -15,6 +15,7 @@ type Logger struct {
 	name        string
 	laps        int
 	indentation int
+	disabled    bool
 }
 
 type LogOptions struct {
@@ -35,9 +36,18 @@ func New(name string) Logger {
 		name = fmt.Sprintf("%s-%d", name, names[name])
 	}
 	start := time.Now()
-	bm := Logger{start, start, name, 0, 0}
+	bm := Logger{start, start, name, 0, 0, false}
 	bm.Log("Starting", ExcludeDelta)
 	return bm
+}
+
+func (logger Logger) Disable() Logger {
+	logger.disabled = true
+	return logger
+}
+
+func (logger *Logger) Laps() int {
+	return logger.laps
 }
 
 func (logger *Logger) Reset(msg string, options ...interface{}) {
@@ -58,6 +68,10 @@ func Return[T any](logger *Logger, value T, options ...interface{}) T {
 }
 
 func (logger *Logger) Log(msg string, opts ...interface{}) {
+	if logger.disabled {
+		return
+	}
+
 	logOptions := &LogOptions{
 		includeTotal: false,
 		includeDelta: true,

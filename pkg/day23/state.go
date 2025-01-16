@@ -1,6 +1,9 @@
 package day23
 
-import "adventofcode2016/pkg/utils/assert"
+import (
+	"adventofcode2016/pkg/utils/assert"
+	"strconv"
+)
 
 type State struct {
 	registers  []int
@@ -24,6 +27,14 @@ func (s *State) read(register string) int {
 	return 0
 }
 
+func (s *State) isRegister(register string) bool {
+	switch register {
+	case "a", "b", "c", "d":
+		return true
+	}
+	return false
+}
+
 func (s *State) write(register string, value int) {
 	switch register {
 	case "a":
@@ -37,4 +48,12 @@ func (s *State) write(register string, value int) {
 	default:
 		assert.Fail("unable to write register value", register)
 	}
+}
+
+func (s *State) literal(value string) int {
+	out, err := strconv.Atoi(value)
+	if err != nil {
+		out = s.read(value)
+	}
+	return out
 }
